@@ -18,15 +18,17 @@ import {
   Stack,
   Text,
   Select,
-  CircularProgress, Box
+  CircularProgress, Box,Flex,IconButton
 } from '@chakra-ui/react';
+import { AiOutlineCloseCircle } from "react-icons/ai"
 
 export default function Apply() {
 
   const [title, setTitle] = useState("");
   const [email, setEmail] = useState("");
   const [num, setNum] = useState("");
-  const [resume, setResume] = useState("");
+  const [resume, setResume] = useState(null);
+  const [fileName,setFileName]=useState("")
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -45,13 +47,17 @@ export default function Apply() {
   const handleload = (e) => {
     setIsLoading(true)
     const file = e.target.files[0];
-    console.log(file);
+    setFileName(e.target.files[0].name)
+   // console.log(file);
     const newFile = { file };
     setResume(newFile)
-    console.log(resume);
+    console.log(fileName);
     setIsLoading(false)
   }
-
+  const handleCancelClick = () => {
+    setResume(null);
+    setFileName("")
+};
 
   return (
     <>
@@ -142,6 +148,21 @@ export default function Apply() {
                 )}
               </Button>
             </label>
+            {fileName && (
+                <Box ml={4}>
+                    <Flex alignItems="center">
+                        <Text fontSize="sm">{fileName}</Text>
+                        <IconButton
+                            icon={<AiOutlineCloseCircle />}
+                            size="xs"
+                            ml={2}
+                            onClick={handleCancelClick}
+                            aria-label="Cancel"
+                        />
+                    </Flex>
+                </Box>
+            )}
+
 
           </ModalBody>
 
